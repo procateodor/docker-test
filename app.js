@@ -65,8 +65,8 @@ mongoose
 
 // Middlewares
 app.use(cors());
-app.use(compression());
 app.use(morgan('tiny', { stream: logStream }));
+app.use(compression());
 app.use(bodyParser.json());
 app.use(setLogger(logger));
 app.use(setConfig(config));
