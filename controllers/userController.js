@@ -18,6 +18,7 @@ exports.getAllUsers = async (req, res) => {
 
 exports.createUser = async (req, res) => {
   try {
+    
   } catch (error) {
     req.log.error(`Unable create user -> ${error}`);
     return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

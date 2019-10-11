@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const HttpStatus = require('http-status-codes');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const helmet = require('helmet')
 
 const path = require('path');
 const rfs = require('rotating-file-stream');
@@ -42,9 +43,8 @@ const logger = winston.createLogger({
 
 // create a rotating write streamxw
 const logStream = rfs('access_logs.log', {
-  interval: '1d', // rotate daily
-  path: path.join(__dirname, 'logs', 'access'),
-  compress: 'gzip',
+  interval: '1d',
+  path: path.join(__dirname, 'logs', 'access')
 });
 
 const PORT = process.env.NODE_ENV === 'prod' ? 80 : 3000;
@@ -65,14 +65,15 @@ mongoose
 
 // Middlewares
 app.use(cors());
-app.use(morgan('tiny', { stream: logStream }));
-app.use(compression());
+app.use(helmet())
 app.use(bodyParser.json());
+app.use(compression());
+app.use(morgan('tiny', { stream: logStream }));
 app.use(setLogger(logger));
 app.use(setConfig(config));
 app.use(setDatabase(models));
-// app.use(requireAuth())
-app.use('/api', router);
+app.use(requireAuth())
+app.use('/', router);
 
 // 404
 app.use((req, res, next) => {

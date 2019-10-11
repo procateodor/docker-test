@@ -28,7 +28,7 @@ exports.setDatabase = db => {
 };
 
 exports.requireAuth = () => {
-  const skipPaths = ['/api/login', '/api/register'];
+  const skipPaths = ['/auth/register', '/auth/login'];
 
   return (req, res, next) => {
     if (skipPaths.includes(req.path)) {
